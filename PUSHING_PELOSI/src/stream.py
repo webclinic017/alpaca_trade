@@ -21,6 +21,7 @@ def grab_trades_to_make():
         'X-CSRFToken': cf.CSRFTOKEN,
         'Authorization': 'Token ' + cf.QQ_API_TOKEN
         }
+        print(cf.CSRFTOKEN, cf.QQ_API_TOKEN, cf.QQ_ENDPOINT)
         req = requests.get(cf.QQ_ENDPOINT, headers=headers)
         req.raise_for_status()
 
