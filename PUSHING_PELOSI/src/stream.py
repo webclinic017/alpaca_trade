@@ -1,11 +1,17 @@
 import helpers.alpaca_helper as ah
 import PUSHING_PELOSI.src.config as cf
 import requests
+from sqlalchemy import true
 """
 Kent Waxman 2022
 
 Builds a rebalancing Congress trading portfolio
 """
+
+def run():
+    if ah.is_market_open() == true:
+        grab_trades_to_make()
+        rebalance()
 
 # MARK - HELPER FUNCTIONS
 def grab_trades_to_make():
@@ -14,6 +20,7 @@ def grab_trades_to_make():
     orders = {}
     sum = 0.0
     try:
+
         #accesses QuiverQuant API
         headers = { 'accept': 'application/json',
         'X-CSRFToken': cf.CSRFTOKEN,
@@ -25,11 +32,13 @@ def grab_trades_to_make():
         json_trades = req.json()
         
         for index in range(len(json_trades)):
-            if json_trades[index]["Transaction"] == 'Purchase':
-                orders[json_trades[index]["Ticker"]] = orders.get(json_trades[index]["Ticker"], 0) + float(json_trades[index]["Amount"])
-                sum += float(json_trades[index]["Amount"])
-            else:
-                orders[json_trades[index]["Ticker"]] = orders.get(json_trades[index]["Ticker"], 0) - float(json_trades[index]["Amount"])
+            # check if the stock is traded on alpaca
+            if ah.is_an_active_asset(json_trades[index]["Ticker"]) == true:
+                if json_trades[index]["Transaction"] == 'Purchase':
+                    orders[json_trades[index]["Ticker"]] = orders.get(json_trades[index]["Ticker"], 0) + float(json_trades[index]["Amount"])
+                    sum += float(json_trades[index]["Amount"])
+                elif json_trades[index]["Transaction"] == 'Sale':
+                    orders[json_trades[index]["Ticker"]] = orders.get(json_trades[index]["Ticker"], 0) - float(json_trades[index]["Amount"])
     except Exception as err:
         print(f'Error occurred: {err}')
 
@@ -48,17 +57,3 @@ def rebalance():
         elif orders[key] > 0:
             print("BUYING: ", key, " AMOUNT: $", amnt)
             ah.submit_order('buy', key, amnt)
-
-#     for key in sells:
-#         amnt = abs((sells[key] * equity)/sum)
-#         orders[key] = amnt
-# #         print("SELLING: ", key, " AMOUNT: $", amnt)
-
-# #     # equate for portfolio value change and now put in buy orders
-#     equity = float(ah.get_account_attributes('equity')) 
-#     print("EQUITY1: ", equity)
-#     for key in purchases:
-#         amnt = abs((purchases[key] * equity)/sum)
-#         print("PUCHASE: (", abs(purchases[key])," * ", equity, ")/", abs(sum), " = ", amnt)
-#         print("BUYING: ", key, " AMOUNT: $", amnt)
-#         ah.submit_order('buy', key, amnt)    

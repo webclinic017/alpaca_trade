@@ -68,3 +68,10 @@ def is_market_open():
         return true
     else:
         return false
+
+def is_an_active_asset(symbol: str):
+    try:
+        api.get_asset(symbol)
+        print("test")
+    except:
+        return false
