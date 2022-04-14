@@ -32,8 +32,7 @@ def grab_trades_to_make():
                 sum += float(json_trades[index]["Amount"])
             else:
                 sells[json_trades[index]["Ticker"]] = sells.get(json_trades[index]["Ticker"], 0) - float(json_trades[index]["Amount"])
-                sum -= float(json_trades[index]["Amount"])
-    except Exception as err:
+except Exception as err:
         print(f'Error occurred: {err}')
 
 def rebalance():
@@ -46,10 +45,10 @@ def rebalance():
         ah.submit_order('sell', key, amnt)
 
     # equate for portfolio value change and now put in buy orders
-    cash = float(ah.get_account_attributes('cash'))
-    print("CASH: ", cash)
+    equity = float(ah.get_account_attributes('equity')) 
+    print("EQUITY: ", equity)
     for key in purchases:
-        amnt = abs((purchases[key] * cash)/sum)
-        print("PUCHASE: (", abs(purchases[key])," * ", cash, ")/", abs(sum), " = ", amnt)
+        amnt = abs((purchases[key] * equity)/sum)
+        print("PUCHASE: (", abs(purchases[key])," * ", equity, ")/", abs(sum), " = ", amnt)
         print("BUYING: ", key, " AMOUNT: $", amnt)
         ah.submit_order('buy', key, amnt)    
