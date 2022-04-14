@@ -19,7 +19,7 @@ def grab_trades_to_make():
         #accesses QuiverQuant API
         headers = { 'accept': 'application/json',
         'X-CSRFToken': cf.CSRFTOKEN,
-        'Authorization': 'Token ' + cf.QQ_API_TOKEN
+        'Authorization': cf.QQ_API_TOKEN
         }
         print("CSRF", cf.CSRFTOKEN, "api", cf.QQ_API_TOKEN,"endpoint", cf.QQ_ENDPOINT)
         req = requests.get(cf.QQ_ENDPOINT, headers=headers)
