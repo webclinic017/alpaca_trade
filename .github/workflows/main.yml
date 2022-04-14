@@ -23,6 +23,6 @@ jobs:
         env:
           API_KEY: ${{ secrets.API_KEY }}
           API_SECRET: ${{ secrets.API_SECRET }}
-          CSRF_TOKEN: ${{ secrets.CSRFTOKEN }}
+          CSRFTOKEN: ${{ secrets.CSRFTOKEN }}
           QQ_API_TOKEN: ${{ secrets.QQAPITOKEN }}
         run: python main.py
