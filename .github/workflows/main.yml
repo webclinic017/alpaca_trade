@@ -26,5 +26,5 @@ jobs:
           API_KEY: ${{ secrets.API_KEY }}
           API_SECRET: ${{ secrets.API_SECRET }}
           CSRFTOKEN: ${{ secrets.CSRFTOKEN }}
-          QQ_API_TOKEN: ${{ secrets.QQAPITOKEN }}
+          QQ_API_TOKEN: ${{ secrets.QQ_API_TOKEN }}
         run: python main.py
