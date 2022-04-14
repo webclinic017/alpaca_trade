@@ -42,10 +42,10 @@ def rebalance():
     orders.sort()
     for key in orders:
         amnt = abs((orders[key] * equity)/sum)
-        if (orders[key] < 0):
+        if orders[key] < 0:
             print("SELLING: ", key, " AMOUNT: $", amnt)
             ah.submit_order('sell', key, amnt)
-        else if (orders[key] > 0):
+        elif orders[key] > 0:
             print("BUYING: ", key, " AMOUNT: $", amnt)
             ah.submit_order('buy', key, amnt)
 #     for key in sells:
