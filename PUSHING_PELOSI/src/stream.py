@@ -32,6 +32,7 @@ def grab_trades_to_make():
         
         #check the trades for trading eligbility
         active_assets = ah.get_active_assets()
+        print(active_assets)
         for index in range(len(json_trades)):
             # check if the stock is traded on alpaca
             if json_trades[index]["Ticker"] in active_assets:
