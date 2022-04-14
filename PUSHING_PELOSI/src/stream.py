@@ -38,6 +38,7 @@ def grab_trades_to_make():
 def rebalance():
     # put in sell orders to sell first
     buying_power = float(ah.get_account_attributes('buying_power'))
+    print("BUYING POWER 1:", buying_power)
     for key in sells:
         amnt = abs((sells[key] * buying_power)/sum)
         print("SELLING: ", key, " AMOUNT: $", amnt)
@@ -45,6 +46,7 @@ def rebalance():
 
     # equate for portfolio value change and now put in buy orders
     buying_power = float(ah.get_account_attributes('buying_power'))
+    print("BUYING POWER 2: ", buying_power)
     for key in purchases:
         amnt = abs((purchases[key] * buying_power)/sum)
         print("BUYING: ", key, " AMOUNT: $", amnt)
