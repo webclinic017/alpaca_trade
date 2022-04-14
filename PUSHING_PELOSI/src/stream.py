@@ -46,7 +46,7 @@ def rebalance():
 
     # equate for portfolio value change and now put in buy orders
     buying_power = float(ah.get_account_attributes('buying_power'))
-    print("BUYING POWER 2: ", buying_power)
+    print("BUYING POWER 2!: ", buying_power)
     for key in purchases:
         amnt = abs((purchases[key] * buying_power)/sum)
         print("BUYING: ", key, " AMOUNT: $", amnt)
