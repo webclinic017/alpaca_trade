@@ -69,5 +69,9 @@ def is_market_open():
     else:
         return false
 
-def get_active_assets():
-    return api.list_assets(status='active')
+def is_asset_tradable(symbol: str):
+    try:
+        asset = api.get_asset(symbol)
+        return asset.tradable
+    except:
+        return false

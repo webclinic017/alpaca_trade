@@ -1,7 +1,7 @@
 import helpers.alpaca_helper as ah
 import PUSHING_PELOSI.src.config as cf
 import requests
-from sqlalchemy import true, false
+from sqlalchemy import true
 """
 Kent Waxman 2022
 
@@ -9,7 +9,7 @@ Builds a rebalancing Congress trading portfolio
 """
 
 def run():
-    if ah.is_market_open() == false:
+    if ah.is_market_open() == true:
         grab_trades_to_make()
         rebalance()
 
@@ -29,18 +29,18 @@ def grab_trades_to_make():
         req.raise_for_status()
 
         json_trades = req.json()
-        
-        #check the trades for trading eligbility
-        active_assets = ah.get_active_assets()
-        print(active_assets)
+    
         for index in range(len(json_trades)):
             # check if the stock is traded on alpaca
-            if json_trades[index]["Ticker"] in active_assets:
-                if json_trades[index]["Transaction"] == 'Purchase':
-                    orders[json_trades[index]["Ticker"]] = orders.get(json_trades[index]["Ticker"], 0) + float(json_trades[index]["Amount"])
-                    sum += float(json_trades[index]["Amount"])
-                elif json_trades[index]["Transaction"] == 'Sale':
-                    orders[json_trades[index]["Ticker"]] = orders.get(json_trades[index]["Ticker"], 0) - float(json_trades[index]["Amount"])
+            symbol = json_trades[index]["Ticker"]
+            transaction = json_trades[index]["Transaction"]
+            amount = float(json_trades[index]["Amount"])
+            if ah.is_asset_tradable(symbol):
+                if transaction == 'Purchase':
+                    orders[symbol] = orders.get(symbol, 0) + amount
+                    sum += amount
+                elif transaction == 'Sale':
+                    orders[symbol] = orders.get(symbol, 0) - amount
     except Exception as err:
         print(f'Error occurred: {err}')
 
