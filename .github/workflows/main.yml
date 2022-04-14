@@ -21,8 +21,8 @@ jobs:
 
       - name: Run PUSHING_PELOSI
         env:
-          api_key: ${{ secrets.API_KEY }}
-          api_secret: ${{ secrets.API_SECRET }}
-          csrf_token: ${{ secrets.CSRFTOKEN }}
-          qq_api_token: ${{ secrets.QQAPITOKEN }}
+          API_KEY: ${{ secrets.API_KEY }}
+          API_SECRET: ${{ secrets.API_SECRET }}
+          CSRF_TOKEN: ${{ secrets.CSRFTOKEN }}
+          QQ_API_TOKEN: ${{ secrets.QQAPITOKEN }}
         run: python main.py
