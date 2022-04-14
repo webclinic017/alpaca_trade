@@ -36,19 +36,20 @@ def grab_trades_to_make():
 def rebalance():
     # put in sell orders to sell first
     equity = float(ah.get_account_attributes('equity'))
-    print("EQUITY1:", equity)
+    print("EQUITY:", equity)
     
-    #sort the orders from smallest to largest
-    sorted(orders, key=orders.get)
-    for key in orders:
-        amnt = abs((orders[key] * equity)/sum)
+    #sort the orders from smallest to largest + iterate
+    sorted_orders = sorted(orders.values)
+    for key in sorted_orders:
+        weight = abs((orders[key])/sum)
+        amnt = weight * equity
         if orders[key] < 0:
             print("SELLING: ", key, " AMOUNT: $", amnt)
             ah.submit_order('sell', key, amnt)
         elif orders[key] > 0:
             print("BUYING: ", key, " AMOUNT: $", amnt)
             ah.submit_order('buy', key, amnt)
-            
+
 #     for key in sells:
 #         amnt = abs((sells[key] * equity)/sum)
 #         orders[key] = amnt
