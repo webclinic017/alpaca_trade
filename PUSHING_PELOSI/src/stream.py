@@ -9,11 +9,9 @@ Builds a rebalancing Congress trading portfolio
 
 # MARK - HELPER FUNCTIONS
 def grab_trades_to_make():
-    global purchases
-    global sells
+    global orders
     global sum
-    purchases = {}
-    sells = {}
+    orders = {}
     sum = 0.0
     try:
         #accesses QuiverQuant API
@@ -28,10 +26,10 @@ def grab_trades_to_make():
         
         for index in range(len(json_trades)):
             if json_trades[index]["Transaction"] == 'Purchase':
-                purchases[json_trades[index]["Ticker"]] = purchases.get(json_trades[index]["Ticker"], 0) + float(json_trades[index]["Amount"])
+                orders[json_trades[index]["Ticker"]] = orders.get(json_trades[index]["Ticker"], 0) + float(json_trades[index]["Amount"])
                 sum += float(json_trades[index]["Amount"])
             else:
-                sells[json_trades[index]["Ticker"]] = sells.get(json_trades[index]["Ticker"], 0) - float(json_trades[index]["Amount"])
+                orders[json_trades[index]["Ticker"]] = orders.get(json_trades[index]["Ticker"], 0) - float(json_trades[index]["Amount"])
     except Exception as err:
         print(f'Error occurred: {err}')
 
@@ -39,16 +37,27 @@ def rebalance():
     # put in sell orders to sell first
     equity = float(ah.get_account_attributes('equity'))
     print("EQUITY:", equity)
-    for key in sells:
-        amnt = abs((sells[key] * equity)/sum)
-        print("SELLING: ", key, " AMOUNT: $", amnt)
-        ah.submit_order('sell', key, amnt)
+    
+    #sort the orders from smallest to largest
+    orders.sort()
+    for key in orders:
+        amnt = abs((orders[key] * equity)/sum)
+        if (orders[key] < 0):
+            print("SELLING: ", key, " AMOUNT: $", amnt)
+            ah.submit_order('sell', key, amnt)
+        else if (orders[key] > 0):
+            print("BUYING: ", key, " AMOUNT: $", amnt)
+            ah.submit_order('buy', key, amnt)
+#     for key in sells:
+#         amnt = abs((sells[key] * equity)/sum)
+#         orders[key] = amnt
+# #         print("SELLING: ", key, " AMOUNT: $", amnt)
 
-    # equate for portfolio value change and now put in buy orders
-    equity = float(ah.get_account_attributes('equity')) 
-    print("EQUITY1: ", equity)
-    for key in purchases:
-        amnt = abs((purchases[key] * equity)/sum)
-        print("PUCHASE: (", abs(purchases[key])," * ", equity, ")/", abs(sum), " = ", amnt)
-        print("BUYING: ", key, " AMOUNT: $", amnt)
-        ah.submit_order('buy', key, amnt)    
+# #     # equate for portfolio value change and now put in buy orders
+#     equity = float(ah.get_account_attributes('equity')) 
+#     print("EQUITY1: ", equity)
+#     for key in purchases:
+#         amnt = abs((purchases[key] * equity)/sum)
+#         print("PUCHASE: (", abs(purchases[key])," * ", equity, ")/", abs(sum), " = ", amnt)
+#         print("BUYING: ", key, " AMOUNT: $", amnt)
+#         ah.submit_order('buy', key, amnt)    
