@@ -27,20 +27,21 @@ def grab_trades_to_make():
         json_trades = req.json()
         
         for index in range(len(json_trades)):
-            sum += float(json_trades[index]["Amount"])
             if json_trades[index]["Transaction"] == 'Purchase':
                 purchases[json_trades[index]["Ticker"]] = purchases.get(json_trades[index]["Ticker"], 0) + float(json_trades[index]["Amount"])
+                sum += float(json_trades[index]["Amount"])
             else:
                 sells[json_trades[index]["Ticker"]] = sells.get(json_trades[index]["Ticker"], 0) - float(json_trades[index]["Amount"])
+                sum -= float(json_trades[index]["Amount"])
     except Exception as err:
         print(f'Error occurred: {err}')
 
 def rebalance():
     # put in sell orders to sell first
-    portfolio_value = float(ah.get_account_attributes('portfolio_value'))
-    print("PORTFOLIO VALUE 1:", portfolio_value)
+    equity = float(ah.get_account_attributes('equity'))
+    print("EQUITY:", equity)
     for key in sells:
-        amnt = abs((sells[key] * portfolio_value)/sum)
+        amnt = abs((sells[key] * equity)/sum)
         print("SELLING: ", key, " AMOUNT: $", amnt)
         ah.submit_order('sell', key, amnt)
 
