@@ -4,7 +4,7 @@ import os
 QQ_ENDPOINT = 'https://api.quiverquant.com/beta/live/congresstrading'
 
 #CSRFTOKEN - Secure random token
-CSRFTOKEN = os.environ['CSRFTOKEN']
+CSRFTOKEN = os.environ.get('CSRFTOKEN')
 
 #QQ_API_TOKEN - QuiverQuant service API token
-QQ_API_TOKEN = 'Token ' + os.environ['QQ_API_TOKEN']
+QQ_API_TOKEN = os.environ.get('QQ_API_TOKEN')
