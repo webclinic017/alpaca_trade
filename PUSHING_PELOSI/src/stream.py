@@ -20,7 +20,6 @@ def grab_trades_to_make():
     orders = {}
     sum = 0.0
     try:
-
         #accesses QuiverQuant API
         headers = { 'accept': 'application/json',
         'X-CSRFToken': cf.CSRFTOKEN,
@@ -31,9 +30,11 @@ def grab_trades_to_make():
 
         json_trades = req.json()
         
+        #check the trades for trading eligbility
+        active_assets = ah.get_active_assets()
         for index in range(len(json_trades)):
             # check if the stock is traded on alpaca
-            if ah.is_an_active_asset(json_trades[index]["Ticker"]) == true:
+            if json_trades[index]["Ticker"] in active_assets:
                 if json_trades[index]["Transaction"] == 'Purchase':
                     orders[json_trades[index]["Ticker"]] = orders.get(json_trades[index]["Ticker"], 0) + float(json_trades[index]["Amount"])
                     sum += float(json_trades[index]["Amount"])
