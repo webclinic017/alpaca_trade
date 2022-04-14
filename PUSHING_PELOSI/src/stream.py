@@ -15,6 +15,10 @@ def run():
 
 # MARK - HELPER FUNCTIONS
 def grab_trades_to_make():
+    """
+    Grab the most recent Congress trades and check if they are
+    eligible to be traded on the Alpaca platform
+    """
     global orders
     global sum
     orders = {}
@@ -31,10 +35,10 @@ def grab_trades_to_make():
         json_trades = req.json()
     
         for index in range(len(json_trades)):
-            # check if the stock is traded on alpaca
             symbol = json_trades[index]["Ticker"]
             transaction = json_trades[index]["Transaction"]
             amount = float(json_trades[index]["Amount"])
+            # check if the stock is traded on alpaca
             if ah.is_asset_tradable(symbol):
                 if transaction == 'Purchase':
                     orders[symbol] = orders.get(symbol, 0) + amount
@@ -45,6 +49,9 @@ def grab_trades_to_make():
         print(f'Error occurred: {err}')
 
 def rebalance():
+    """
+    Rebalances the portfolio based off the new trades
+    """
     # put in sell orders to sell first
     equity = float(ah.get_account_attributes('equity'))
     print("EQUITY:", equity)
@@ -53,9 +60,9 @@ def rebalance():
     for (key, value) in sorted(orders.items(), key= lambda x: x[1]):
         weight = abs(value/sum)
         amnt = weight * equity
-        if orders[key] < 0:
+        if value < 0:
             print("SELLING: ", key, " AMOUNT: $", amnt)
             ah.submit_order('sell', key, amnt)
-        elif orders[key] > 0:
+        elif value > 0:
             print("BUYING: ", key, " AMOUNT: $", amnt)
             ah.submit_order('buy', key, amnt)
