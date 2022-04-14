@@ -32,7 +32,7 @@ def grab_trades_to_make():
                 sum += float(json_trades[index]["Amount"])
             else:
                 sells[json_trades[index]["Ticker"]] = sells.get(json_trades[index]["Ticker"], 0) - float(json_trades[index]["Amount"])
-except Exception as err:
+    except Exception as err:
         print(f'Error occurred: {err}')
 
 def rebalance():
