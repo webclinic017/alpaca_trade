@@ -1,7 +1,7 @@
 import helpers.alpaca_helper as ah
 import PUSHING_PELOSI.src.config as cf
 import requests
-from sqlalchemy import true
+from sqlalchemy import true, false
 """
 Kent Waxman 2022
 
@@ -9,7 +9,7 @@ Builds a rebalancing Congress trading portfolio
 """
 
 def run():
-    if ah.is_market_open() == true:
+    if ah.is_market_open() == false:
         grab_trades_to_make()
         rebalance()
 
