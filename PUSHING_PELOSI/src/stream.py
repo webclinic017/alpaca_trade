@@ -39,9 +39,8 @@ def rebalance():
     print("EQUITY:", equity)
     
     #sort the orders from smallest to largest + iterate
-    sorted_orders = sorted(orders.values)
-    for key in sorted_orders:
-        weight = abs((orders[key])/sum)
+    for (key, value) in sorted(orders.items(), key= lambda x: x[1]):
+        weight = abs(value/sum)
         amnt = weight * equity
         if orders[key] < 0:
             print("SELLING: ", key, " AMOUNT: $", amnt)
