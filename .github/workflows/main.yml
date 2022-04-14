@@ -5,7 +5,7 @@ name: PUSHING_PELOSI
 # Controls when the workflow will run
 on:
   push:
-    - branch: main
+    - branch: master
   schedule:
     - cron: '*/5 * * * *'
 
