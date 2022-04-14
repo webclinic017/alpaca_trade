@@ -39,7 +39,7 @@ def rebalance():
     print("EQUITY:", equity)
     
     #sort the orders from smallest to largest
-    orders.sort()
+    sorted(orders, key=orders.get)
     for key in orders:
         amnt = abs((orders[key] * equity)/sum)
         if orders[key] < 0:
