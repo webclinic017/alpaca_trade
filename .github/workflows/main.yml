@@ -25,4 +25,4 @@ jobs:
           api_secret: ${{ secrets.API_SECRET }}
           csrf_token: ${{ secrets.CSRFTOKEN }}
           qq_api_token: ${{ secrets.QQAPITOKEN }}
-        run: python ./main.py
+        run: python main.py
