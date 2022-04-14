@@ -7,4 +7,4 @@ QQ_ENDPOINT = 'https://api.quiverquant.com/beta/live/congresstrading'
 CSRFTOKEN = os.environ['CSRFTOKEN']
 
 #QQ_API_TOKEN - QuiverQuant service API token
-QQ_API_TOKEN = os.environ['QQ_API_TOKEN']
+QQ_API_TOKEN = 'Token ' + os.environ['QQ_API_TOKEN']
