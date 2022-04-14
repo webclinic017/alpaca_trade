@@ -49,5 +49,6 @@ def rebalance():
     print("CASH: ", cash)
     for key in purchases:
         amnt = abs((purchases[key] * cash)/sum)
+        print("PUCHASE: (", abs(purchases[key])," * ", cash, ")/", abs(sum), " = ", amnt)
         print("BUYING: ", key, " AMOUNT: $", amnt)
         ah.submit_order('buy', key, amnt)    
