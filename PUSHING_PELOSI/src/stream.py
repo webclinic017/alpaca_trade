@@ -36,7 +36,7 @@ def grab_trades_to_make():
 def rebalance():
     # put in sell orders to sell first
     equity = float(ah.get_account_attributes('equity'))
-    print("EQUITY:", equity)
+    print("EQUITY1:", equity)
     
     #sort the orders from smallest to largest
     sorted(orders, key=orders.get)
