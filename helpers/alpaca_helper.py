@@ -69,15 +69,11 @@ def is_market_open():
     else:
         return false
 
-def is_asset_tradable(symbol: str):
+def get_tradable_assets():
     """
-    Check if the asset is tradable on Alpaca
+    Grab tradable assets on Alpaca
     """
-    try:
-        asset = api.get_asset(symbol)
-        return asset.tradable
-    except:
-        return false
+    return api.list_assets(status='active')
 
 def get_position_market_value(symbol: str):
     try:

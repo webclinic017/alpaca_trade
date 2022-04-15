@@ -33,13 +33,17 @@ def grab_trades_to_make():
         req.raise_for_status()
 
         json_trades = req.json()
+
+        tradable_assets = ah.get_tradable_assets()
     
         for index in range(len(json_trades)):
             symbol = json_trades[index]["Ticker"]
             transaction = json_trades[index]["Transaction"]
             amount = float(json_trades[index]["Amount"])
             # check if the stock is traded on Alpaca
-            if ah.is_asset_tradable(symbol):
+            is_tradable = [a for a in tradable_assets if a.__getattr__('symbol') == symbol]
+            print("TRADABLE:", is_tradable)
+            if is_tradable:
                 if transaction == 'Purchase':
                     orders[symbol] = orders.get(symbol, 0) + amount
                     sum += amount
