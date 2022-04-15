@@ -70,8 +70,17 @@ def is_market_open():
         return false
 
 def is_asset_tradable(symbol: str):
+    """
+    Check if the asset is tradable on Alpaca
+    """
     try:
         asset = api.get_asset(symbol)
         return asset.tradable
     except:
         return false
+
+def get_position_market_value(symbol: str):
+    try:
+        return float(api.get_position(symbol).__getattr__('market_value'))
+    except:
+        return 0
