@@ -9,9 +9,9 @@ Builds a rebalancing Congress trading portfolio
 """
 
 def run():
-    if ah.is_market_open() == true:
-        grab_trades_to_make()
-        rebalance()
+    # if ah.is_market_open() == true:
+    grab_trades_to_make()
+    rebalance()
 
 # MARK - HELPER FUNCTIONS
 def grab_trades_to_make():
