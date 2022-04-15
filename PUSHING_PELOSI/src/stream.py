@@ -41,7 +41,7 @@ def grab_trades_to_make():
             transaction = json_trades[index]["Transaction"]
             amount = float(json_trades[index]["Amount"])
             # filter to check if the stock is traded on Alpaca
-            is_tradable = [a for a in tradable_assets if a.__getattr__('symbol') == symbol]
+            is_tradable = [a for a in tradable_assets if a.__getattr__('symbol') == symbol].count > 0
             if is_tradable and amount >= cf.MINIMUM_AMNT:
                 if transaction == 'Purchase':
                     orders[symbol] = orders.get(symbol, 0) + amount
