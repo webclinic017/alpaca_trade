@@ -65,7 +65,7 @@ def rebalance():
         amnt = weight * equity
         if value < 0:
             print("SELLING: ", key, " AMOUNT: $", amnt)
-            ah.submit_order('sell', key, amnt, 'limit')
+            ah.submit_order('sell', key, amnt)
         elif value > 0:
             print("BUYING: ", key, " AMOUNT: $", amnt)
-            ah.submit_order('buy', key, amnt, 'limit')
+            ah.submit_order('buy', key, amnt)
